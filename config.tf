@@ -32,7 +32,7 @@ resource "yandex_vpc_subnet" "lab-subnet-a" {
   network_id     = "${yandex_vpc_network.lab-net.id}"
 }
 
-resource "yandex_compute_instance" "instance-based-on-coi" {
+resource "yandex_compute_instance" "ubuntu-20-04-lts-v20220124" {
   boot_disk {
     initialize_params {
       image_id = data.yandex_compute_image.container-optimized-image.id
