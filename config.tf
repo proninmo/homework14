@@ -45,7 +45,7 @@ resource "yandex_compute_instance" "instance-based-on-coi" {
     memory = 2
   }
   metadata = {
-    docker-container-declaration = file("${path.module}/declaration.yaml")
-    user-data = file("${path.module}/cloud_config.yaml")
+    docker-container-declaration = file("${path.module}/declaration.yml")
+    user-data = file("${path.module}/cloud_config.yml")
   }
 }
