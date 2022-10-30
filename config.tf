@@ -28,7 +28,7 @@ resource "yandex_compute_instance" "vm-1" {
 
   boot_disk {
     initialize_params {
-      image_id = "f2eei02oardlpedocvan"
+      image_id = "f2eqqnlf8ugqu0hol5s5"
     }
   }
 
@@ -52,7 +52,7 @@ resource "yandex_compute_instance" "vm-2" {
 
   boot_disk {
     initialize_params {
-      image_id = "f2eei02oardlpedocvan"
+      image_id = "f2eqqnlf8ugqu0hol5s5"
     }
   }
 
