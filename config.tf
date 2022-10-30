@@ -27,7 +27,7 @@ resource "yandex_vpc_network" "lab-net" {
 }
 
 resource "yandex_vpc_subnet" "lab-subnet-a" {
-  v4_cidr_blocks = ["10.2.0.0/16"]
+  v4_cidr_blocks = ["10.2.3.0/24"]
   zone           = "ru-central1-a"
   network_id     = "${yandex_vpc_network.lab-net.id}"
 }
