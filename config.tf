@@ -22,12 +22,14 @@ data "yandex_compute_image" "container-optimized-image" {
   family = "container-optimized-image"
 }
 
-resource "yandex_vpc_subnet" "testsubnet" {
-  name           = "subnet-1"
-  description    = "My first subnet"
+resource "yandex_vpc_network" "lab-net" {
+  name = "lab-network"
+}
+
+resource "yandex_vpc_subnet" "lab-subnet-a" {
   v4_cidr_blocks = ["10.2.0.0/16"]
   zone           = "ru-central1-a"
-  network_id     = "${yandex_vpc_subnet.foo.id}"
+  network_id     = "${yandex_vpc_network.lab-net.id}"
 }
 
 resource "yandex_compute_instance" "instance-based-on-coi" {
@@ -37,7 +39,7 @@ resource "yandex_compute_instance" "instance-based-on-coi" {
     }
   }
   network_interface {
-    subnet_id = "${yandex_vpc_subnet.foo.id}"
+    subnet_id = "${yandex_vpc_subnet.lab-subnet-a.id}"
     nat = true
   }
   resources {
