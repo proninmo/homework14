@@ -40,7 +40,7 @@ resource "yandex_compute_instance" "default" {
 
   metadata = {
     foo      = "bar"
-    ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
+    ssh-keys = "fddi:${file("/home/fddi/.ssh/id_rsa.pub")}"
   }
 }
 
