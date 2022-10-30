@@ -30,7 +30,7 @@ resource "yandex_compute_instance" "default" {
 
   boot_disk {
     initialize_params {
-      image_id = "image_id"
+      image_id = "ubuntu-22-04-lts-v20221024"
     }
   }
 
