@@ -10,7 +10,7 @@ terraform {
 // Configure the Yandex.Cloud provider
 provider "yandex" {
   token                    = "y0_AgAAAAAFB4j6AATuwQAAAADSlhucqqU6X_zsRh61zgMVgtmNPBj-G0U"
-  service_account_key_file = "/root/yacloud/key.json"
+  service_account_key_file = "/home/fddi/key.json"
   cloud_id                 = "b1g5h324cthaptno5nqf"
   folder_id                = "b1g2f8n81gpa25g6i9sg"
   zone                     = "ru-central1-a"
