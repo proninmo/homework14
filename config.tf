@@ -18,36 +18,78 @@ provider "yandex" {
 
 // Create a new instance
 
-data "yandex_compute_image" "container-optimized-image" {
-  family = "container-optimized-image"
-}
+resource "yandex_compute_instance" "vm-1" {
+  name = "terraform1"
 
-resource "yandex_vpc_network" "lab-net" {
-  name = "lab-network"
-}
-
-resource "yandex_vpc_subnet" "lab-subnet-a" {
-  v4_cidr_blocks = ["10.2.3.0/24"]
-  zone           = "ru-central1-a"
-  network_id     = "${yandex_vpc_network.lab-net.id}"
-}
-
-resource "yandex_compute_instance" "ubuntu-20-04-lts-v20220124" {
-  boot_disk {
-    initialize_params {
-      image_id = data.yandex_compute_image.container-optimized-image.id
-    }
-  }
-  network_interface {
-    subnet_id = "${yandex_vpc_subnet.lab-subnet-a.id}"
-    nat = true
-  }
   resources {
-    cores = 2
+    cores  = 2
     memory = 2
   }
-  metadata = {
-    docker-container-declaration = file("${path.module}/declaration.yml")
-    user-data = file("${path.module}/cloud_config.yml")
+
+  boot_disk {
+    initialize_params {
+      image_id = "f2eei02oardlpedocvan"
+    }
   }
+
+  network_interface {
+    subnet_id = yandex_vpc_subnet.subnet-1.id
+    nat       = true
+  }
+
+  metadata = {
+    ssh-keys = "fddi:${file("/home/fddi/.ssh/id_rsa.pub")}"
+  }
+}
+
+resource "yandex_compute_instance" "vm-2" {
+  name = "terraform2"
+
+  resources {
+    cores  = 2
+    memory = 2
+  }
+
+  boot_disk {
+    initialize_params {
+      image_id = "f2eei02oardlpedocvan"
+    }
+  }
+
+  network_interface {
+    subnet_id = yandex_vpc_subnet.subnet-1.id
+    nat       = true
+  }
+
+  metadata = {
+    ssh-keys = "fddi:${file("/home/fddi/.ssh/id_rsa.pub")}"
+  }
+}
+
+resource "yandex_vpc_network" "network-1" {
+  name = "network1"
+}
+
+resource "yandex_vpc_subnet" "subnet-1" {
+  name           = "subnet1"
+  zone           = "ru-central1-a"
+  network_id     = yandex_vpc_network.network-1.id
+  v4_cidr_blocks = ["192.168.10.0/24"]
+}
+
+output "internal_ip_address_vm_1" {
+  value = yandex_compute_instance.vm-1.network_interface.0.ip_address
+}
+
+output "internal_ip_address_vm_2" {
+  value = yandex_compute_instance.vm-2.network_interface.0.ip_address
+}
+
+
+output "external_ip_address_vm_1" {
+  value = yandex_compute_instance.vm-1.network_interface.0.nat_ip_address
+}
+
+output "external_ip_address_vm_2" {
+  value = yandex_compute_instance.vm-2.network_interface.0.nat_ip_address
 }
