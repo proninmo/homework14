@@ -18,36 +18,26 @@ provider "yandex" {
 
 // Create a new instance
 
-resource "yandex_compute_instance" "default" {
-  name        = "test"
-  platform_id = "standard-v1"
-  zone        = "ru-central1-a"
-
-  resources {
-    cores  = 2
-    memory = 4
-  }
-
-  boot_disk {
-    initialize_params {
-      image_id = "ubuntu-22-04-lts-v20221024"
-    }
-  }
-
-  network_interface {
-    subnet_id = "${yandex_vpc_subnet.foo.id}"
-  }
-
-  metadata = {
-    foo      = "bar"
-    ssh-keys = "fddi:${file("/home/fddi/.ssh/id_rsa.pub")}"
-  }
+data "yandex_compute_image" "container-optimized-image" {
+  family = "container-optimized-image"
 }
 
-resource "yandex_vpc_network" "foo" {}
-
-resource "yandex_vpc_subnet" "foo" {
-  v4_cidr_blocks = ["10.2.0.0/24"]
-  zone       = "ru-central1-a"
-  network_id = "${yandex_vpc_network.foo.id}"
+resource "yandex_compute_instance" "instance-based-on-coi" {
+  boot_disk {
+    initialize_params {
+      image_id = data.yandex_compute_image.container-optimized-image.id
+    }
+  }
+  network_interface {
+    subnet_id = "${yandex_vpc_subnet.foo.id}"
+    nat = true
+  }
+  resources {
+    cores = 2
+    memory = 2
+  }
+  metadata = {
+    docker-container-declaration = file("${path.module}/declaration.yaml")
+    user-data = file("${path.module}/cloud_config.yaml")
+  }
 }
