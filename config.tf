@@ -22,7 +22,7 @@ data "yandex_compute_image" "container-optimized-image" {
   family = "container-optimized-image"
 }
 
-resource "yandex_vpc_subnet" "foo" {
+resource "yandex_vpc_subnet" "testsubnet" {
   name           = "subnet-1"
   description    = "My first subnet"
   v4_cidr_blocks = ["10.2.0.0/16"]
