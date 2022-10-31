@@ -41,12 +41,8 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   metadata = {
-    name = "fddi"
-    groups = "sudo"
-    shell = "/bin/bash"
-    sudo = "['ALL=(ALL) NOPASSWD:ALL']"
-    ssh-keys = "fddi:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDyVn+C/voNdyZmT+ze221T7DQtAVQ8Ymz3bdiTvyIcsmNzd4yVNZFiAdMbbpEHYg8YnkT7ZASXo7ySk4NFSZQP3yIYmPui79tB5Ok0jYXG8zlA03B0QyIh7VfeKrHxt9QI77detGaRWpdkzGQPf496mmvzHud4XhT4bswurBfzOK5c70eZ9puCz9FNiv33VdKJe8lTu/468LE5R+e4ipz8C8X7f9+sxXLgS/42eZd6scWEU6EKF+WS5x7+yjLKhXUZvrs10fVOIlIym2Lqta4stEugcmX5zC5t1RjHfrHcCxrtmSThGYMYrpCl7o9aESCMLvMnQoVSJoL0MobgEW+Mkg1srGWNZca7B57FfOkRU4VsR9FrpGS49n+vsNA7ObZ9DgvNe0Nok5zK74MPeOybz9ZmZB3eXRXMrJK+eB3MNvkQ2hLDdz96L993IkHaNmvWvT0H8RwUvMitsnMPiINa179Q4h3MX0ZkI7lsJLrtB4fZePP0VH01f8J3mfphQf0="
-  }
+    user-data = "${file("./meta.yml")}"
+     }
 }
 
 resource "yandex_vpc_network" "network-1" {
